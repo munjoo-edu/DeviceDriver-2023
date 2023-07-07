@@ -14,7 +14,12 @@ int DeviceDriver::read(long address)
 
 void DeviceDriver::write(long address, int data)
 {
-    if (m_hardware->read(address) != 0xFF)
-        throw WriteFailException();
+    checkBlockReady(address);
     m_hardware->write(address, (unsigned char)data);
+}
+
+void DeviceDriver::checkBlockReady(long address)
+{
+	if (m_hardware->read(address) != 0xFF)
+		throw WriteFailException();
 }
