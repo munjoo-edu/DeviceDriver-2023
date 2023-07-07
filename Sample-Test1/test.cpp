@@ -20,5 +20,19 @@ TEST(FlashTest, TestWriteNormal)
 	EXPECT_CALL(mock, write)
 		.Times(1);
 
+	EXPECT_CALL(mock, read)
+		.WillRepeatedly(Return(0xFF));
+
 	dd.write(0x00, 'A');
+}
+
+TEST(FlashTest, TestWriteAbnormal)
+{
+	MockFlashDD mock{};
+	DeviceDriver dd{ &mock };
+
+	EXPECT_CALL(mock, read)
+		.WillRepeatedly(Return(0x0));
+
+	EXPECT_THROW(dd.write(0x00, 'A'), WriteFailException);
 }
