@@ -12,21 +12,28 @@ public:
 	MOCK_METHOD(void, write, (long address, unsigned char data), (override));
 };
 
-TEST(TestCaseName, TestReadNormal) {
+class FlashTestFixture : public testing::Test
+{
+protected:
+	void SetUp() override
+	{
+	}
+public:
 	MockFlashDD mock{};
+	DeviceDriver dd{ &mock };
+};
+
+TEST_F(FlashTestFixture, TestReadNormal) {
 	EXPECT_CALL(mock, read(0x01))
 		.Times(5)
 		.WillRepeatedly(Return('A'));
-
-	DeviceDriver dd{ &mock };
 
 	unsigned char actual = dd.read(0x01);
 	unsigned char expected = 'A';
 	EXPECT_EQ(expected, actual);
 }
 
-TEST(TestCaseName, TestReadAbnormal) {
-	MockFlashDD mock{};
+TEST_F(FlashTestFixture, TestReadAbnormal) {
 	EXPECT_CALL(mock, read(0x01))
 		.Times(5)
 		.WillOnce(Return('A'))
@@ -35,7 +42,5 @@ TEST(TestCaseName, TestReadAbnormal) {
 		.WillOnce(Return('A'))
 		.WillOnce(Return('B'));
 
-	DeviceDriver dd{ &mock };
-	
 	EXPECT_THROW(dd.read(0x01), ReadFailException);
 }
