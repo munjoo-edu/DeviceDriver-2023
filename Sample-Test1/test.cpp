@@ -26,3 +26,18 @@ TEST(TestCaseName, TestReadNormal) {
 	unsigned char expected = 'A';
 	EXPECT_EQ(expected, actual);
 }
+
+TEST(TestCaseName, TestReadAbnormal) {
+	MockFlashDD mock{};
+	EXPECT_CALL(mock, read(0x01))
+		.Times(5)
+		.WillOnce(Return('A'))
+		.WillOnce(Return('A'))
+		.WillOnce(Return('A'))
+		.WillOnce(Return('A'))
+		.WillOnce(Return('B'));
+
+	DeviceDriver dd{ &mock };
+	
+	EXPECT_THROW(dd.read(0x01), exception);
+}
