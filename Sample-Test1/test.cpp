@@ -80,6 +80,5 @@ TEST(FlashTestApp, TestAppReadAndPrint)
 		.Times(5 * 100)
 		.WillRepeatedly(Return(0xAA));
 
-
 	app.ReadAndPrint(1000, 1099);
 }

@@ -54,10 +54,9 @@ public:
 
 	void ReadAndPrint(long startAddr, long endAddr)
 	{
-		string ret = "";
-		for(long i = startAddr; i <= endAddr; i++)
+		for(long tar_addr = startAddr; tar_addr <= endAddr; tar_addr++)
 		{
-			cout << dd->read(i) << " ";
+			cout << dd->read(tar_addr) << " ";
 		}
 	}
 
