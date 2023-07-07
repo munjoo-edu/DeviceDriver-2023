@@ -1,5 +1,8 @@
 #include "DeviceDriver.h"
+#include <stdexcept>
+using namespace std;
 
+class WriteFailException : public exception {};
 DeviceDriver::DeviceDriver(FlashMemoryDevice *hardware) : m_hardware(hardware)
 {}
 
@@ -11,6 +14,5 @@ int DeviceDriver::read(long address)
 
 void DeviceDriver::write(long address, int data)
 {
-    // TODO: implement this method
     m_hardware->write(address, (unsigned char)data);
 }
