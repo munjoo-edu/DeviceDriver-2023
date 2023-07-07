@@ -8,8 +8,6 @@ using namespace std;
 class MockFlashDD : public FlashMemoryDevice
 {
 public:
-	//virtual unsigned char read(long address) = 0;
-	//virtual void write(long address, unsigned char data) = 0;
 	MOCK_METHOD(unsigned char, read, (long address), (override));
 	MOCK_METHOD(void, write, (long address, unsigned char data), (override));
 };
@@ -39,5 +37,5 @@ TEST(TestCaseName, TestReadAbnormal) {
 
 	DeviceDriver dd{ &mock };
 	
-	EXPECT_THROW(dd.read(0x01), exception);
+	EXPECT_THROW(dd.read(0x01), ReadFailException);
 }

@@ -2,6 +2,8 @@
 #include <stdexcept>
 using namespace std;
 
+class ReadFailException : public exception {};
+
 DeviceDriver::DeviceDriver(FlashMemoryDevice *hardware) : m_hardware(hardware)
 {}
 
@@ -15,7 +17,7 @@ void DeviceDriver::check_data_4times(long address, unsigned char ret)
 	for(int i= 0; i<4; i++)
 	{
 		if (ret != m_hardware->read(address))
-			throw exception("HW fault");
+			throw ReadFailException();
 	}
 }
 
