@@ -1,5 +1,7 @@
 #include "DeviceDriver.h"
+#include <iostream>
 #include <stdexcept>
+#include <string>
 using namespace std;
 
 class ReadFailException : public exception {};
@@ -43,3 +45,27 @@ void DeviceDriver::checkBlockReady(long address)
 	if (m_hardware->read(address) != 0xFF)
 		throw WriteFailException();
 }
+
+class flashApp
+{
+public:
+	flashApp(DeviceDriver* tar_dd)
+		:dd(tar_dd) {};
+
+	void ReadAndPrint(long startAddr, long endAddr)
+	{
+		for(long tar_addr = startAddr; tar_addr <= endAddr; tar_addr++)
+		{
+			cout << dd->read(tar_addr) << " ";
+		}
+	}
+
+	void WriteAll(unsigned char val)
+	{
+		for(int i = 0; i < 5; i++)
+			dd->write(i, val);
+	}
+
+private:
+	DeviceDriver* dd = nullptr;
+};

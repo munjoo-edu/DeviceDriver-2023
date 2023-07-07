@@ -69,3 +69,32 @@ TEST(FlashTest, TestWriteAbnormal)
 
 	EXPECT_THROW(dd.write(0x00, 'A'), WriteFailException);
 }
+
+TEST(FlashTestApp, TestAppReadAndPrint)
+{
+	MockFlashDD mock{};
+	DeviceDriver dd{ &mock };
+	flashApp app{ &dd };
+
+	EXPECT_CALL(mock, read)
+		.Times(5 * 100)
+		.WillRepeatedly(Return(0xAA));
+
+	app.ReadAndPrint(1000, 1099);
+}
+
+TEST(FlashTestApp, TestAppWriteAll)
+{
+	MockFlashDD mock{};
+	DeviceDriver dd{ &mock };
+	flashApp app{ &dd };
+
+	EXPECT_CALL(mock, read)
+		.Times(5)
+		.WillRepeatedly(Return(0xFF));
+
+	EXPECT_CALL(mock, write)
+		.Times(5);
+
+	app.WriteAll('A');
+}
