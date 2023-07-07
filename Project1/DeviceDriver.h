@@ -10,5 +10,8 @@ public:
     void checkBlockReady(long address);
 
 protected:
-    FlashMemoryDevice *m_hardware;
+    unsigned char read_from_device(long address);
+    void check_data_4times(long address, unsigned char ret);
+
+	FlashMemoryDevice *m_hardware;
 };
