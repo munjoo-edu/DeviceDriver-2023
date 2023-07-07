@@ -62,11 +62,8 @@ public:
 
 	void WriteAll(unsigned char val)
 	{
-		dd->write(0x00, val);
-		dd->write(0x01, val);
-		dd->write(0x02, val);
-		dd->write(0x03, val);
-		dd->write(0x04, val);
+		for(int i = 0; i < 5; i++)
+			dd->write(i, val);
 	}
 
 private:
